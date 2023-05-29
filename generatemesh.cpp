@@ -5,6 +5,11 @@
 GenerateMesh::GenerateMesh(QWidget *parent)
     : QWidget{parent}
 {
+
+}
+
+void GenerateMesh::generateMesh()
+{
     // Before using any functions in the C++ API, Gmsh must be initialized:
     gmsh::initialize();
 
@@ -47,5 +52,4 @@ GenerateMesh::GenerateMesh(QWidget *parent)
 
 
     gmsh::finalize();
-
 }

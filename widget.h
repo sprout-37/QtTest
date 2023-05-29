@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <vector>
+#include "generatemesh.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -20,6 +21,8 @@ private:
     Ui::Widget *ui;
     QVector<double> getDistances(const QVector<double> &x, const QVector<double> &y);
     void plotContactStress();
+    GenerateMesh * mesh;
+
 
 private slots:
     // 初始化样式函数
