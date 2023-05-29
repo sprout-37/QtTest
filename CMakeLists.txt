@@ -20,8 +20,8 @@ set(PROJECT_SOURCES
         widget.ui
         flatui.h flatui.cpp
         qcustomplot.h qcustomplot.cpp
+        readcsvfile.h readcsvfile.cpp
 )
-
 
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

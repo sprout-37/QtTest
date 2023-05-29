@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::Widget *ui;
+    QVector<double> getDistances(const QVector<double> &x, const QVector<double> &y);
+    void plotContactStress();
 
 private slots:
     // 初始化样式函数

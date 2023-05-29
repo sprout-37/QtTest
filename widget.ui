@@ -55,10 +55,10 @@
        <widget class="QWidget" name="widget_3" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLineEdit" name="txt2"/>
+          <widget class="QLineEdit" name="txt1"/>
          </item>
          <item>
-          <widget class="QLineEdit" name="txt1"/>
+          <widget class="QLineEdit" name="txt2"/>
          </item>
          <item>
           <widget class="QLineEdit" name="txt3"/>
