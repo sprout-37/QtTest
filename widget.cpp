@@ -8,6 +8,7 @@
 #include <QByteArray>
 #include <QString>
 #include "readcsvfile.h"
+#include "generatemesh.h"
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -69,6 +70,8 @@ Widget::Widget(QWidget *parent)
         ui->customPlot->yAxis->setRange(0, 140000);
         ui->customPlot->replot();
 
+
+        GenerateMesh mesh(this);
     });
 
 //    plotContactStress();
@@ -99,8 +102,6 @@ void Widget::plotContactStress()
 {
 
 
-
-//    std::vector<float> distances = getDistances(x, y);
 }
 
 void Widget::initForm()

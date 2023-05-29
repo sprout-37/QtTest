@@ -1,6 +1,7 @@
 ﻿#include "readcsvfile.h"
 #include <QIODevice>
 #include <QFile>
+#include <QTextStream>
 
 readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector<double>& col3,  QVector<double>& col4)
 {

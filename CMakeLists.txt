@@ -21,6 +21,8 @@ set(PROJECT_SOURCES
         flatui.h flatui.cpp
         qcustomplot.h qcustomplot.cpp
         readcsvfile.h readcsvfile.cpp
+        gmsh.h
+        generatemesh.h generatemesh.cpp
 )
 
 
@@ -29,27 +31,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET QtTest APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(QtTest SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(QtTest
-            ${PROJECT_SOURCES}
-        )
-    endif()
 endif()
 
 target_include_directories(QtTest PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_link_libraries(QtTest PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(QtTest PRIVATE Qt${QT_VERSION_MAJOR}::PrintSupport)
+target_link_libraries(QtTest PUBLIC ${CMAKE_CURRENT_LIST_DIR}/lib/gmsh-4.11.dll)
 
 set_target_properties(QtTest PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
