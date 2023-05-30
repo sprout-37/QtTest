@@ -1,25 +1,25 @@
-﻿#include "widget.h"
+#include "widget.h"
 #include "./ui_widget.h"
 #include "flatui.h"
 #include "qdatetime.h"
-#include <fstream>
 #include <iostream>
 #include <QFile>
 #include <QByteArray>
 #include <QString>
+#include <QProcess>
 #include "readcsvfile.h"
 #include "generatemesh.h"
 
 Widget::Widget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::Widget)
+    : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
     // 初始qss样式
     this->initForm();
 
     // 点击选取文件按钮，弹出文件对话框，并进行图像绘制
-    connect(ui->btn_1,&QPushButton::clicked,this,[=](){
+    connect(ui->btn1, &QPushButton::clicked, this, [=]()
+            {
         // 打开文件，并将文件信息返回给path
         QString path = QFileDialog::getOpenFileName(this,"打开文件","C:/Users/Zeem/Desktop");
         // 将路径放入到lineEdit中
@@ -47,13 +47,39 @@ Widget::Widget(QWidget *parent)
         // 绘制压力分布
         plotContactStress(contact_normal_lm, x, y);
 
-        file.close();
-    });
+        file.close(); });
 
     // 实例化网格对象
     this->mesh = new GenerateMesh(this);
     // 将按钮与产生网格相连接
-    connect(ui->btn_2,&QPushButton::clicked,this->mesh,&GenerateMesh::generateMesh);
+    connect(ui->btn2, &QPushButton::clicked, this->mesh, &GenerateMesh::generateMesh);
+
+    // 将程序与计算程序相连接
+    QProcess *process = new QProcess(this);
+    // connect the button with exe
+    connect(ui->btn3, &QPushButton::clicked, this, [=]()
+        {
+            // Set program name and parameters
+            QString program = "/home/meng/moose_install_test/contact0526/contact0526-opt";
+            QStringList arguments;
+            arguments << "-i" << "/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/zhixian_no_fric.i";
+
+            process->setProgram(program);
+            process->setArguments(arguments);
+//            process->setReadChannel(QProcess::StandardOutput);
+
+            QObject::connect(process, &QProcess::readyReadStandardOutput, [process]() {
+                QByteArray data = process->readAllStandardOutput();
+                QString output(data);
+                qDebug() << output;
+            });
+
+            process->start();
+
+//            process->waitForFinished();
+
+        });
+
 
 }
 
@@ -70,8 +96,9 @@ QVector<double> Widget::getDistances(const QVector<double> &x, const QVector<dou
     QVector<double> dist(l, 0);
     double s = 0;
 
-    for (int i = 1; i < l; i++) {
-        s += sqrt(pow(x[i] - x[i-1], 2) + pow(y[i] - y[i-1], 2));
+    for (int i = 1; i < l; i++)
+    {
+        s += sqrt(pow(x[i] - x[i - 1], 2) + pow(y[i] - y[i - 1], 2));
         dist[i] = s;
     }
 
@@ -101,8 +128,9 @@ void Widget::initForm()
     ui->bar2->setRange(0, 100);
     ui->slider1->setRange(0, 100);
     ui->slider2->setRange(0, 100);
-    ui->btn_1->setText("打开文件");
-    ui->btn_2->setText("生成网格");
+    ui->btn1->setText("打开文件");
+    ui->btn2->setText("生成网格");
+    ui->btn3->setText("运行程序");
 
     connect(ui->slider1, SIGNAL(valueChanged(int)), ui->bar1, SLOT(setValue(int)));
     connect(ui->slider2, SIGNAL(valueChanged(int)), ui->bar2, SLOT(setValue(int)));
@@ -111,10 +139,10 @@ void Widget::initForm()
 
     this->setStyleSheet("*{outline:0px;}QWidget#frmFlatUI{background:#FFFFFF;}");
 
-    FlatUI::setPushButtonQss(ui->btn_1);
-    FlatUI::setPushButtonQss(ui->btn_2, 5, 8, "#1ABC9C", "#E6F8F5", "#2EE1C1", "#FFFFFF", "#16A086", "#A7EEE6");
-    FlatUI::setPushButtonQss(ui->btn_3, 5, 8, "#3498DB", "#FFFFFF", "#5DACE4", "#E5FEFF", "#2483C7", "#A0DAFB");
-    FlatUI::setPushButtonQss(ui->btn_4, 5, 8, "#E74C3C", "#FFFFFF", "#EC7064", "#FFF5E7", "#DC2D1A", "#F5A996");
+    FlatUI::setPushButtonQss(ui->btn1);
+    FlatUI::setPushButtonQss(ui->btn2, 5, 8, "#1ABC9C", "#E6F8F5", "#2EE1C1", "#FFFFFF", "#16A086", "#A7EEE6");
+    FlatUI::setPushButtonQss(ui->btn3, 5, 8, "#3498DB", "#FFFFFF", "#5DACE4", "#E5FEFF", "#2483C7", "#A0DAFB");
+    FlatUI::setPushButtonQss(ui->btn4, 5, 8, "#E74C3C", "#FFFFFF", "#EC7064", "#FFF5E7", "#DC2D1A", "#F5A996");
 
     FlatUI::setLineEditQss(ui->txt1);
     FlatUI::setLineEditQss(ui->txt2, 5, 2, "#DCE4EC", "#1ABC9C");
@@ -135,7 +163,7 @@ void Widget::initForm()
     FlatUI::setScrollBarQss(ui->horizontalScrollBar);
     FlatUI::setScrollBarQss(ui->verticalScrollBar, 8, 120, 20, "#606060", "#34495E", "#1ABC9C", "#E74C3C");
 
-    //设置列数和列宽
+    // 设置列数和列宽
     int width = 1920;
     ui->tableWidget->setColumnCount(5);
     ui->tableWidget->setColumnWidth(0, width * 0.06);
@@ -146,7 +174,11 @@ void Widget::initForm()
     ui->tableWidget->verticalHeader()->setDefaultSectionSize(25);
 
     QStringList headText;
-    headText << "设备编号" << "设备名称" << "设备地址" << "告警内容" << "告警时间";
+    headText << "设备编号"
+             << "设备名称"
+             << "设备地址"
+             << "告警内容"
+             << "告警时间";
     ui->tableWidget->setHorizontalHeaderLabels(headText);
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -155,10 +187,11 @@ void Widget::initForm()
     ui->tableWidget->verticalHeader()->setVisible(false);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
 
-    //设置行高
+    // 设置行高
     ui->tableWidget->setRowCount(300);
 
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 300; i++)
+    {
         ui->tableWidget->setRowHeight(i, 24);
         QTableWidgetItem *itemDeviceID = new QTableWidgetItem(QString::number(i + 1));
         QTableWidgetItem *itemDeviceName = new QTableWidgetItem(QString("测试设备%1").arg(i + 1));

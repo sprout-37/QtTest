@@ -1,8 +1,9 @@
-﻿#ifndef WIDGET_H
+#ifndef WIDGET_H
 #define WIDGET_H
 
 #include <QWidget>
 #include <vector>
+#include <QProcess>
 #include "generatemesh.h"
 
 QT_BEGIN_NAMESPACE
@@ -22,7 +23,6 @@ private:
     QVector<double> getDistances(const QVector<double> &x, const QVector<double> &y);
     void plotContactStress(const QVector<double> &contact_normal_lm, const QVector<double> x, const QVector<double> &y);
     GenerateMesh * mesh;
-
 
 private slots:
     // 初始化样式函数
