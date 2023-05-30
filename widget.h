@@ -20,7 +20,7 @@ public:
 private:
     Ui::Widget *ui;
     QVector<double> getDistances(const QVector<double> &x, const QVector<double> &y);
-    void plotContactStress();
+    void plotContactStress(const QVector<double> &contact_normal_lm, const QVector<double> x, const QVector<double> &y);
     GenerateMesh * mesh;
 
 

@@ -15,9 +15,10 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    // 初始qss样式
     this->initForm();
 
-    // 点击选取文件按钮，弹出文件对话框
+    // 点击选取文件按钮，弹出文件对话框，并进行图像绘制
     connect(ui->btn_1,&QPushButton::clicked,this,[=](){
         // 打开文件，并将文件信息返回给path
         QString path = QFileDialog::getOpenFileName(this,"打开文件","C:/Users/Zeem/Desktop");
@@ -25,7 +26,6 @@ Widget::Widget(QWidget *parent)
         ui->txt1->setText(path);
 
         // 读取内容，并放入textEdit中
-        // 实例化file对象，QFile默认支持的格式是utf-8，如果要读取gbk格式，需要加一些其他代码
         QFile file(path); // 参数为要读取文件的路径
         // 设置打开方式
         // https://doc.qt.io/qt-6/qiodevicebase.html#OpenModeFlag-enum
@@ -34,44 +34,23 @@ Widget::Widget(QWidget *parent)
         // QByteArray array = file.read();
         // 读取一行数据
         QByteArray array = file.readLine();
-
-        QVector<double> contact_normal_lm;
-        QVector<double> x;
-        QVector<double> y;
-//        readCsvFile(path, data1, data2);
-        readCsvFile read_csv(path, contact_normal_lm, x, y);
-
         // 将读取到的数据，放入textEdit中
         ui->txt2->setText(array);
 
-        // 输出数组
-        // 输出结果
-//        qDebug() << "Col1:";
-//        for (const auto& val : contact_normal_lm) {
-//            qDebug() << val;
-//        }
+        // 定义三个vector数组，用于存放绘图用的变量
+        QVector<double> contact_normal_lm;
+        QVector<double> x;
+        QVector<double> y;
 
-//        qDebug() << "Col3:";
-//        for (const auto& val : x) {
-//            qDebug() << val;
-//        }
-        QVector<double> distance = getDistances(x, y);
+        // 读取csv文件
+        readCsvFile read_csv(path, contact_normal_lm, x, y);
+        // 绘制压力分布
+        plotContactStress(contact_normal_lm, x, y);
 
-
-        // 绘图
-        // create graph and assign data to it:
-        ui->customPlot->addGraph();
-        ui->customPlot->graph(0)->setData(distance, contact_normal_lm);
-        // give the axes some labels:
-        ui->customPlot->xAxis->setLabel("Distance along contact surface");
-        ui->customPlot->yAxis->setLabel("Contact pressure");
-        // set axes ranges, so we see all data:
-        ui->customPlot->xAxis->setRange(0, 70);
-        ui->customPlot->yAxis->setRange(0, 140000);
-        ui->customPlot->replot();
-
+        file.close();
     });
 
+    // 实例化网格对象
     this->mesh = new GenerateMesh(this);
     // 将按钮与产生网格相连接
     connect(ui->btn_2,&QPushButton::clicked,this->mesh,&GenerateMesh::generateMesh);
@@ -99,10 +78,21 @@ QVector<double> Widget::getDistances(const QVector<double> &x, const QVector<dou
     return dist;
 }
 
-void Widget::plotContactStress()
+void Widget::plotContactStress(const QVector<double> &contact_normal_lm, const QVector<double> x, const QVector<double> &y)
 {
 
-
+    QVector<double> distance = getDistances(x, y);
+    // 绘图
+    // create graph and assign data to it:
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(0)->setData(distance, contact_normal_lm);
+    // give the axes some labels:
+    ui->customPlot->xAxis->setLabel("Distance along contact surface");
+    ui->customPlot->yAxis->setLabel("Contact pressure");
+    // set axes ranges, so we see all data:
+    ui->customPlot->xAxis->setRange(0, 70);
+    ui->customPlot->yAxis->setRange(0, 140000);
+    ui->customPlot->replot();
 }
 
 void Widget::initForm()
