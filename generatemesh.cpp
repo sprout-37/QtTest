@@ -191,7 +191,6 @@ void GenerateMesh::generateMesh()
     // We can then generate a 2D mesh...
     gmsh::model::mesh::generate(2);
 
-
     // ... and save it to disk
     gmsh::write("t1.msh");
 
