@@ -167,7 +167,7 @@ void GenerateMesh::generateMesh()
     gmsh::model::addPhysicalGroup(1, {2}, 53, "pin_bottom");
     gmsh::model::addPhysicalGroup(1, {46}, 54, "pin_center");
     gmsh::model::addPhysicalGroup(1, {50}, 55, "piston_center");
-    gmsh::model::addPhysicalGroup(1, {1, 3, 5}, 56, "piston_top");
+    gmsh::model::addPhysicalGroup(1, {1, 3, 5}, 56, "pin_top");
     gmsh::model::addPhysicalGroup(1, {47, 20, 21, 22, 49}, 59, "piston_top1");
 
     // Add physical properties to faces

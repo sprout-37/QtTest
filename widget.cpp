@@ -13,6 +13,10 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+    // 设置窗口标题
+    setWindowTitle("活塞销接触计算");
+
     // 初始qss样式
     this->initForm();
 
@@ -21,6 +25,11 @@ Widget::Widget(QWidget *parent)
             {
         // 打开文件，并将文件信息返回给path
         QString path = QFileDialog::getOpenFileName(this,"打开文件","C:/Users/Zeem/Desktop");
+
+        if (path.isEmpty()){
+            return;
+        }
+
         // 将路径放入到lineEdit中
         ui->txt1->setText(path);
 
@@ -48,6 +57,7 @@ Widget::Widget(QWidget *parent)
 
         file.close(); });
 
+
     // 实例化网格对象
     this->mesh = new GenerateMesh(this);
     // 将按钮与产生网格相连接
@@ -70,7 +80,7 @@ Widget::Widget(QWidget *parent)
             QObject::connect(process, &QProcess::readyReadStandardOutput, [process]() {
                 QByteArray data = process->readAllStandardOutput();
                 QString output(data);
-                qDebug() << output;
+                qDebug().noquote() << output; // 令换行符等转义字符生效
             });
 
             process->start();
@@ -78,6 +88,44 @@ Widget::Widget(QWidget *parent)
 //            process->waitForFinished();
 
         });
+
+    // 点击选取文件按钮，弹出文件对话框，并进行图像绘制
+    connect(ui->btn4, &QPushButton::clicked, this, [=]()
+            {
+
+                // 打开文件，并将文件信息返回给path
+                QString path = QFileDialog::getOpenFileName(this,"打开文件","/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/");
+
+                if (path.isEmpty()){
+                    return;
+                }
+
+                // 将路径放入到lineEdit中
+                ui->txt1->setText(path);
+
+                // 读取内容，并放入textEdit中
+                QFile file(path); // 参数为要读取文件的路径
+                // 设置打开方式
+                // https://doc.qt.io/qt-6/qiodevicebase.html#OpenModeFlag-enum
+                file.open(QIODeviceBase::ReadOnly);
+                // 直接读取所有数据
+                // QByteArray array = file.read();
+                // 读取一行数据
+                QByteArray array = file.readLine();
+                // 将读取到的数据，放入textEdit中
+                ui->txt2->setText(array);
+
+                // 定义三个vector数组，用于存放绘图用的变量
+                QVector<double> contact_normal_lm;
+                QVector<double> x;
+                QVector<double> y;
+
+                // 读取csv文件
+                readCsvFile read_csv(path, contact_normal_lm, x, y);
+                // 绘制压力分布
+                plotContactStress(contact_normal_lm, x, y);
+
+                file.close(); });
 
 
 }
@@ -130,6 +178,7 @@ void Widget::initForm()
     ui->btn1->setText("打开文件");
     ui->btn2->setText("生成网格");
     ui->btn3->setText("运行程序");
+    ui->btn4->setText("查看结果");
 
     connect(ui->slider1, SIGNAL(valueChanged(int)), ui->bar1, SLOT(setValue(int)));
     connect(ui->slider2, SIGNAL(valueChanged(int)), ui->bar2, SLOT(setValue(int)));
