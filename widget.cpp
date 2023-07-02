@@ -20,42 +20,52 @@ Widget::Widget(QWidget *parent)
     // 初始qss样式
     this->initForm();
 
-    // 点击选取文件按钮，弹出文件对话框，并进行图像绘制
+    // 点击选取网格控制点按钮，弹出文件对话框，并进行网格生成
     connect(ui->btn1, &QPushButton::clicked, this, [=]()
             {
-        // 打开文件，并将文件信息返回给path
-        QString path = QFileDialog::getOpenFileName(this,"打开文件","C:/Users/Zeem/Desktop");
+                // 打开文件，并将文件信息返回给path
+                QString path = QFileDialog::getOpenFileName(this,"导入型线控制点","C:/Users/Zeem/Desktop");
 
-        if (path.isEmpty()){
-            return;
-        }
+                if (path.isEmpty()){
+                    return;
+                }
 
-        // 将路径放入到lineEdit中
-        ui->txt1->setText(path);
+                //                // 将路径放入到lineEdit中
+                //                ui->txt1->setText(path);
 
-        // 读取内容，并放入textEdit中
-        QFile file(path); // 参数为要读取文件的路径
-        // 设置打开方式
-        // https://doc.qt.io/qt-6/qiodevicebase.html#OpenModeFlag-enum
-        file.open(QIODeviceBase::ReadOnly);
-        // 直接读取所有数据
-        // QByteArray array = file.read();
-        // 读取一行数据
-        QByteArray array = file.readLine();
-        // 将读取到的数据，放入textEdit中
-        ui->txt2->setText(array);
+                //                // 读取内容，并放入textEdit中
+                //                QFile file(path); // 参数为要读取文件的路径
+                //                // 设置打开方式
+                //                // https://doc.qt.io/qt-6/qiodevicebase.html#OpenModeFlag-enum
+                //                file.open(QIODeviceBase::ReadOnly);
+                //                // 直接读取所有数据
+                //                // QByteArray array = file.read();
+                //                // 读取一行数据
+                //                QByteArray array = file.readLine();
+                //                // 将读取到的数据，放入textEdit中
+                //                ui->txt2->setText(array);
 
-        // 定义三个vector数组，用于存放绘图用的变量
-        QVector<double> contact_normal_lm;
-        QVector<double> x;
-        QVector<double> y;
+                // 定义两个vector数组，用于存放控制点坐标
+                QVector<double> x;
+                QVector<double> y;
 
-        // 读取csv文件
-        readCsvFile read_csv(path, contact_normal_lm, x, y);
-        // 绘制压力分布
-        plotContactStress(contact_normal_lm, x, y);
+                // 读取csv文件，获取控制点的x坐标和y坐标
+                readCsvFile read_csv(path, x, y);\
 
-        file.close(); });
+                    // 生成网格
+                    GenerateMesh generateMesh(x, y);
+
+                // 绘制压力分布
+                //                plotContactStress(contact_normal_lm, x, y);
+
+
+                //                for (int i = 0; i < x.size(); ++i) {
+                //                    qDebug() << x[i];
+                //                }
+
+
+                //                file.close();
+            });
 
 
     // 实例化网格对象
@@ -67,34 +77,34 @@ Widget::Widget(QWidget *parent)
     QProcess *process = new QProcess(this);
     // connect the button with exe
     connect(ui->btn3, &QPushButton::clicked, this, [=]()
-        {
-            // Set program name and parameters
-            QString program = "/home/meng/moose_install_test/contact0526/contact0526-opt";
-            QStringList arguments;
-            arguments << "-i" << "/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/zhixian_no_fric.i";
+            {
+                // Set program name and parameters
+                QString program = "/home/meng/moose_install_test/contact0526/contact0526-opt";
+                QStringList arguments;
+                arguments << "-i" << "/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/zhixian_no_fric.i";
 
-            process->setProgram(program);
-            process->setArguments(arguments);
-//            process->setReadChannel(QProcess::StandardOutput);
+                process->setProgram(program);
+                process->setArguments(arguments);
+                //            process->setReadChannel(QProcess::StandardOutput);
 
-            QObject::connect(process, &QProcess::readyReadStandardOutput, [process]() {
-                QByteArray data = process->readAllStandardOutput();
-                QString output(data);
-                qDebug().noquote() << output; // 令换行符等转义字符生效
+                QObject::connect(process, &QProcess::readyReadStandardOutput, [process]() {
+                    QByteArray data = process->readAllStandardOutput();
+                    QString output(data);
+                    qDebug().noquote() << output; // 令换行符等转义字符生效
+                });
+
+                process->start();
+
+                //            process->waitForFinished();
+
             });
-
-            process->start();
-
-//            process->waitForFinished();
-
-        });
 
     // 点击选取文件按钮，弹出文件对话框，并进行图像绘制
     connect(ui->btn4, &QPushButton::clicked, this, [=]()
             {
 
                 // 打开文件，并将文件信息返回给path
-                QString path = QFileDialog::getOpenFileName(this,"打开文件","/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/");
+                QString path = QFileDialog::getOpenFileName(this,"选取结果文件","/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/");
 
                 if (path.isEmpty()){
                     return;
@@ -115,10 +125,11 @@ Widget::Widget(QWidget *parent)
                 // 将读取到的数据，放入textEdit中
                 ui->txt2->setText(array);
 
-                // 定义三个vector数组，用于存放绘图用的变量
+                // 定义个vector数组，用于存放绘图用的变量
                 QVector<double> contact_normal_lm;
                 QVector<double> x;
                 QVector<double> y;
+
 
                 // 读取csv文件
                 readCsvFile read_csv(path, contact_normal_lm, x, y);
@@ -175,8 +186,8 @@ void Widget::initForm()
     ui->bar2->setRange(0, 100);
     ui->slider1->setRange(0, 100);
     ui->slider2->setRange(0, 100);
-    ui->btn1->setText("打开文件");
-    ui->btn2->setText("生成网格");
+    ui->btn1->setText("导入型线控制点并生成网格");
+    ui->btn2->setText("生成默认网格");
     ui->btn3->setText("运行程序");
     ui->btn4->setText("查看结果");
 
@@ -211,46 +222,46 @@ void Widget::initForm()
     FlatUI::setScrollBarQss(ui->horizontalScrollBar);
     FlatUI::setScrollBarQss(ui->verticalScrollBar, 8, 120, 20, "#606060", "#34495E", "#1ABC9C", "#E74C3C");
 
-//    // 设置列数和列宽
-//    int width = 1920;
-//    ui->tableWidget->setColumnCount(5);
-//    ui->tableWidget->setColumnWidth(0, width * 0.06);
-//    ui->tableWidget->setColumnWidth(1, width * 0.10);
-//    ui->tableWidget->setColumnWidth(2, width * 0.06);
-//    ui->tableWidget->setColumnWidth(3, width * 0.10);
-//    ui->tableWidget->setColumnWidth(4, width * 0.20);
-//    ui->tableWidget->verticalHeader()->setDefaultSectionSize(25);
+    //    // 设置列数和列宽
+    //    int width = 1920;
+    //    ui->tableWidget->setColumnCount(5);
+    //    ui->tableWidget->setColumnWidth(0, width * 0.06);
+    //    ui->tableWidget->setColumnWidth(1, width * 0.10);
+    //    ui->tableWidget->setColumnWidth(2, width * 0.06);
+    //    ui->tableWidget->setColumnWidth(3, width * 0.10);
+    //    ui->tableWidget->setColumnWidth(4, width * 0.20);
+    //    ui->tableWidget->verticalHeader()->setDefaultSectionSize(25);
 
-//    QStringList headText;
-//    headText << "设备编号"
-//             << "设备名称"
-//             << "设备地址"
-//             << "告警内容"
-//             << "告警时间";
-//    ui->tableWidget->setHorizontalHeaderLabels(headText);
-//    ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-//    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//    ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-//    ui->tableWidget->setAlternatingRowColors(true);
-//    ui->tableWidget->verticalHeader()->setVisible(false);
-//    ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
+    //    QStringList headText;
+    //    headText << "设备编号"
+    //             << "设备名称"
+    //             << "设备地址"
+    //             << "告警内容"
+    //             << "告警时间";
+    //    ui->tableWidget->setHorizontalHeaderLabels(headText);
+    //    ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //    ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    //    ui->tableWidget->setAlternatingRowColors(true);
+    //    ui->tableWidget->verticalHeader()->setVisible(false);
+    //    ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
 
-//    // 设置行高
-//    ui->tableWidget->setRowCount(300);
+    //    // 设置行高
+    //    ui->tableWidget->setRowCount(300);
 
-//    for (int i = 0; i < 300; i++)
-//    {
-//        ui->tableWidget->setRowHeight(i, 24);
-//        QTableWidgetItem *itemDeviceID = new QTableWidgetItem(QString::number(i + 1));
-//        QTableWidgetItem *itemDeviceName = new QTableWidgetItem(QString("测试设备%1").arg(i + 1));
-//        QTableWidgetItem *itemDeviceAddr = new QTableWidgetItem(QString::number(i + 1));
-//        QTableWidgetItem *itemContent = new QTableWidgetItem("防区告警");
-//        QTableWidgetItem *itemTime = new QTableWidgetItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+    //    for (int i = 0; i < 300; i++)
+    //    {
+    //        ui->tableWidget->setRowHeight(i, 24);
+    //        QTableWidgetItem *itemDeviceID = new QTableWidgetItem(QString::number(i + 1));
+    //        QTableWidgetItem *itemDeviceName = new QTableWidgetItem(QString("测试设备%1").arg(i + 1));
+    //        QTableWidgetItem *itemDeviceAddr = new QTableWidgetItem(QString::number(i + 1));
+    //        QTableWidgetItem *itemContent = new QTableWidgetItem("防区告警");
+    //        QTableWidgetItem *itemTime = new QTableWidgetItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
 
-//        ui->tableWidget->setItem(i, 0, itemDeviceID);
-//        ui->tableWidget->setItem(i, 1, itemDeviceName);
-//        ui->tableWidget->setItem(i, 2, itemDeviceAddr);
-//        ui->tableWidget->setItem(i, 3, itemContent);
-//        ui->tableWidget->setItem(i, 4, itemTime);
-//    }
+    //        ui->tableWidget->setItem(i, 0, itemDeviceID);
+    //        ui->tableWidget->setItem(i, 1, itemDeviceName);
+    //        ui->tableWidget->setItem(i, 2, itemDeviceAddr);
+    //        ui->tableWidget->setItem(i, 3, itemContent);
+    //        ui->tableWidget->setItem(i, 4, itemTime);
+    //    }
 }
