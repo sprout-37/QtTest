@@ -5,10 +5,9 @@
 GenerateMesh::GenerateMesh(QWidget *parent)
     : QWidget{parent}
 {
-
 }
 
-GenerateMesh::GenerateMesh(QVector<double>& xCoordinates, QVector<double>& yCoordinates)
+GenerateMesh::GenerateMesh(QVector<double> &xCoordinates, QVector<double> &yCoordinates)
 {
     // Before using any functions in the C++ API, Gmsh must be initialized:
     gmsh::initialize();
@@ -20,83 +19,84 @@ GenerateMesh::GenerateMesh(QVector<double>& xCoordinates, QVector<double>& yCoor
     double l_contact = 10;
 
     // 控制点的ID
-    int controlPointID  = 1000;
-    for (int i = 0; i < xCoordinates.size(); ++i) {
+    int controlPointID = 1000;
+    for (int i = 0; i < xCoordinates.size(); ++i)
+    {
         // 获取控制点的x坐标和y坐标
         double x = xCoordinates[i];
         double y = yCoordinates[i];
 
         // 添加控制点
-        gmsh::model::geo::addPoint(x, y, 0 *u, lc, controlPointID);
+        gmsh::model::geo::addPoint(x, y, 0 * u, lc, controlPointID);
 
         controlPointID++;
     }
 
     // definition of point
-    gmsh::model::geo::addPoint(109.75 *u, 240.849 *u, 0 *u, lc, 64);
-    gmsh::model::geo::addPoint(109.75 *u, 201.98 *u, 0 *u, lc, 10);
-    gmsh::model::geo::addPoint(109.75 *u, 132.905 *u, 0 *u, lc, 63);
-    gmsh::model::geo::addPoint(109.75 *u, 131.595 *u, 0 *u, lc, 11);
-    gmsh::model::geo::addPoint(109.75 *u, 4.10229 *u, 0 *u, lc, 13);
-    gmsh::model::geo::addPoint(109.75 *u, -66.2823 *u, 0 *u, lc, 12);
-    gmsh::model::geo::addPoint(103.779 *u, 131.849 *u, 0 *u, lc, 1);
-    gmsh::model::geo::addPoint(103.779 *u, 3.84862 *u, 0 *u, lc, 4);
-    gmsh::model::geo::addPoint(91.4581 *u, 239.849 *u, 0 *u, lc, 32);
-    gmsh::model::geo::addPoint(91.4581 *u, 231.208 *u, 0 *u, lc, 33);
-    gmsh::model::geo::addPoint(90.4581 *u, 240.849 *u, 0 *u, lc, 31);
-    gmsh::model::geo::addPoint(88.7786 *u, 221.208 *u, 0 *u, lc, 35);
-    gmsh::model::geo::addPoint(85.2231 *u, 240.849 *u, 0 *u, lc, 30);
-    gmsh::model::geo::addPoint(85.2231 *u, 237.846 *u, 0 *u, lc, 29);
-    gmsh::model::geo::addPoint(82.2205 *u, 237.846 *u, 0 *u, lc, 28);
-    gmsh::model::geo::addPoint(82.2205 *u, 229.849 *u, 0 *u, lc, 27);
-    gmsh::model::geo::addPoint(79.7038 *u, 205.49 *u, 0 *u, lc, 36);
-    gmsh::model::geo::addPoint(79.541 *u, 221.208 *u, 0 *u, lc, 25);
-    gmsh::model::geo::addPoint(73.8479 *u, 211.347 *u, 0 *u, lc, 24);
-    gmsh::model::geo::addPoint(73.7667 *u, 170.999 *u, 0 *u, lc, 59);
-    gmsh::model::geo::addPoint(73.7675 *u, 149.693 *u, 0 *u, lc, 41);
-    gmsh::model::geo::addPoint(73.7675 *u, 135.905 *u, 0 *u, l_contact, 40);
-    gmsh::model::geo::addPoint(72.3823 *u, 198.171 *u, 0 *u, lc, 15);
-    gmsh::model::geo::addPoint(71.4581 *u, 231.208 *u, 0 *u, lc, 34);
-    gmsh::model::geo::addPoint(70.7745 *u, 135.898 *u, 0 *u, lc, 58);
-    gmsh::model::geo::addPoint(70.7815 *u, 132.905 *u, 0 *u, l_contact, 57);
-    gmsh::model::geo::addPoint(70.2497 *u, 151.309 *u, 0 *u, lc, 60);
-    gmsh::model::geo::addPoint(68.8946 *u, 143.723 *u, 0 *u, lc, 62);
-    gmsh::model::geo::addPoint(68.3549 *u, 178.999 *u, 0 *u, lc, 61);
-    gmsh::model::geo::addPoint(62.3833 *u, 215.49 *u, 0 *u, lc, 37);
-    gmsh::model::geo::addPoint(61.2665 *u, 191.753 *u, 0 *u, lc, 14);
-    gmsh::model::geo::addPoint(61.1942 *u, 231.633 *u, 0 *u, lc, 26);
-    gmsh::model::geo::addPoint(60.8606 *u, 218.845 *u, 0 *u, lc, 23);
-    gmsh::model::geo::addPoint(60.8606 *u, 203.849 *u, 0 *u, lc, 22);
-    gmsh::model::geo::addPoint(59.7675 *u, 215.849 *u, 0 *u, lc, 20);
-    gmsh::model::geo::addPoint(59.7675 *u, 203.849 *u, 0 *u, lc, 21);
-    gmsh::model::geo::addPoint(53.7655 *u, 178.761 *u, 0 *u, lc, 39);
-    gmsh::model::geo::addPoint(53.7655 *u, 170.999 *u, 0 *u, lc, 38);
-    gmsh::model::geo::addPoint(47.7675 *u, 229.849 *u, 0 *u, lc, 18);
-    gmsh::model::geo::addPoint(47.7675 *u, 215.849 *u, 0 *u, lc, 19);
-    gmsh::model::geo::addPoint(19.75 *u, 229.348 *u, 0 *u, lc, 17);
-    gmsh::model::geo::addPoint(18.5317 *u, 194.461 *u, 0 *u, lc, 16);
-    gmsh::model::geo::addPoint(16.6231 *u, 182.417 *u, 0 *u, lc, 53);
-    gmsh::model::geo::addPoint(9.26749 *u, 131.849 *u, 0 *u, l_contact, 2);
-    gmsh::model::geo::addPoint(9.26749 *u, 3.84862 *u, 0 *u, lc, 3);
-    gmsh::model::geo::addPoint(7.17018 *u, 149.47 *u, 0 *u, lc, 54);
-    gmsh::model::geo::addPoint(6.96495 *u, 131.443 *u, 0 *u, lc, 5);
-    gmsh::model::geo::addPoint(6.96495 *u, 4.25462 *u, 0 *u, lc, 6);
-    gmsh::model::geo::addPoint(6.76749 *u, 135.599 *u, 0 *u, lc, 42);
-    gmsh::model::geo::addPoint(6.76749 *u, 132.849 *u, 0 *u, lc, 43);
-    gmsh::model::geo::addPoint(6.76749 *u, 130.9 *u, 0 *u, lc, 7);
-    gmsh::model::geo::addPoint(6.76749 *u, 67.8486 *u, 0 *u, lc, 9);
-    gmsh::model::geo::addPoint(6.76749 *u, 4.79715 *u, 0 *u, lc, 8);
-    gmsh::model::geo::addPoint(6.51749 *u, 135.849 *u, 0 *u, lc, 45);
-    gmsh::model::geo::addPoint(6.51749 *u, 135.599 *u, 0 *u, lc, 44);
-    gmsh::model::geo::addPoint(3.81749 *u, 135.849 *u, 0 *u, lc, 46);
-    gmsh::model::geo::addPoint(3.81749 *u, 135.599 *u, 0 *u, lc, 47);
-    gmsh::model::geo::addPoint(3.56749 *u, 135.599 *u, 0 *u, lc, 48);
-    gmsh::model::geo::addPoint(3.56749 *u, 133.099 *u, 0 *u, lc, 49);
-    gmsh::model::geo::addPoint(2.36408 *u, 150.849 *u, 0 *u, lc, 56);
-    gmsh::model::geo::addPoint(2.36408 *u, 145.849 *u, 0 *u, lc, 52);
-    gmsh::model::geo::addPoint(-1.23251 *u, 145.849 *u, 0 *u, lc, 51);
-    gmsh::model::geo::addPoint(-1.23251 *u, 133.099 *u, 0 *u, lc, 50);
-    gmsh::model::geo::addPoint(-31.4378 *u, 196.206 *u, 0 *u, lc, 55);
+    gmsh::model::geo::addPoint(109.75 * u, 240.849 * u, 0 * u, lc, 64);
+    gmsh::model::geo::addPoint(109.75 * u, 201.98 * u, 0 * u, lc, 10);
+    gmsh::model::geo::addPoint(109.75 * u, 132.905 * u, 0 * u, lc, 63);
+    gmsh::model::geo::addPoint(109.75 * u, 131.595 * u, 0 * u, lc, 11);
+    gmsh::model::geo::addPoint(109.75 * u, 4.10229 * u, 0 * u, lc, 13);
+    gmsh::model::geo::addPoint(109.75 * u, -66.2823 * u, 0 * u, lc, 12);
+    gmsh::model::geo::addPoint(103.779 * u, 131.849 * u, 0 * u, lc, 1);
+    gmsh::model::geo::addPoint(103.779 * u, 3.84862 * u, 0 * u, lc, 4);
+    gmsh::model::geo::addPoint(91.4581 * u, 239.849 * u, 0 * u, lc, 32);
+    gmsh::model::geo::addPoint(91.4581 * u, 231.208 * u, 0 * u, lc, 33);
+    gmsh::model::geo::addPoint(90.4581 * u, 240.849 * u, 0 * u, lc, 31);
+    gmsh::model::geo::addPoint(88.7786 * u, 221.208 * u, 0 * u, lc, 35);
+    gmsh::model::geo::addPoint(85.2231 * u, 240.849 * u, 0 * u, lc, 30);
+    gmsh::model::geo::addPoint(85.2231 * u, 237.846 * u, 0 * u, lc, 29);
+    gmsh::model::geo::addPoint(82.2205 * u, 237.846 * u, 0 * u, lc, 28);
+    gmsh::model::geo::addPoint(82.2205 * u, 229.849 * u, 0 * u, lc, 27);
+    gmsh::model::geo::addPoint(79.7038 * u, 205.49 * u, 0 * u, lc, 36);
+    gmsh::model::geo::addPoint(79.541 * u, 221.208 * u, 0 * u, lc, 25);
+    gmsh::model::geo::addPoint(73.8479 * u, 211.347 * u, 0 * u, lc, 24);
+    gmsh::model::geo::addPoint(73.7667 * u, 170.999 * u, 0 * u, lc, 59);
+    gmsh::model::geo::addPoint(73.7675 * u, 149.693 * u, 0 * u, lc, 41);
+    gmsh::model::geo::addPoint(73.7675 * u, 135.905 * u, 0 * u, l_contact, 40);
+    gmsh::model::geo::addPoint(72.3823 * u, 198.171 * u, 0 * u, lc, 15);
+    gmsh::model::geo::addPoint(71.4581 * u, 231.208 * u, 0 * u, lc, 34);
+    gmsh::model::geo::addPoint(70.7745 * u, 135.898 * u, 0 * u, lc, 58);
+    gmsh::model::geo::addPoint(70.7815 * u, 132.905 * u, 0 * u, l_contact, 57);
+    gmsh::model::geo::addPoint(70.2497 * u, 151.309 * u, 0 * u, lc, 60);
+    gmsh::model::geo::addPoint(68.8946 * u, 143.723 * u, 0 * u, lc, 62);
+    gmsh::model::geo::addPoint(68.3549 * u, 178.999 * u, 0 * u, lc, 61);
+    gmsh::model::geo::addPoint(62.3833 * u, 215.49 * u, 0 * u, lc, 37);
+    gmsh::model::geo::addPoint(61.2665 * u, 191.753 * u, 0 * u, lc, 14);
+    gmsh::model::geo::addPoint(61.1942 * u, 231.633 * u, 0 * u, lc, 26);
+    gmsh::model::geo::addPoint(60.8606 * u, 218.845 * u, 0 * u, lc, 23);
+    gmsh::model::geo::addPoint(60.8606 * u, 203.849 * u, 0 * u, lc, 22);
+    gmsh::model::geo::addPoint(59.7675 * u, 215.849 * u, 0 * u, lc, 20);
+    gmsh::model::geo::addPoint(59.7675 * u, 203.849 * u, 0 * u, lc, 21);
+    gmsh::model::geo::addPoint(53.7655 * u, 178.761 * u, 0 * u, lc, 39);
+    gmsh::model::geo::addPoint(53.7655 * u, 170.999 * u, 0 * u, lc, 38);
+    gmsh::model::geo::addPoint(47.7675 * u, 229.849 * u, 0 * u, lc, 18);
+    gmsh::model::geo::addPoint(47.7675 * u, 215.849 * u, 0 * u, lc, 19);
+    gmsh::model::geo::addPoint(19.75 * u, 229.348 * u, 0 * u, lc, 17);
+    gmsh::model::geo::addPoint(18.5317 * u, 194.461 * u, 0 * u, lc, 16);
+    gmsh::model::geo::addPoint(16.6231 * u, 182.417 * u, 0 * u, lc, 53);
+    gmsh::model::geo::addPoint(9.26749 * u, 131.849 * u, 0 * u, l_contact, 2);
+    gmsh::model::geo::addPoint(9.26749 * u, 3.84862 * u, 0 * u, lc, 3);
+    gmsh::model::geo::addPoint(7.17018 * u, 149.47 * u, 0 * u, lc, 54);
+    gmsh::model::geo::addPoint(6.96495 * u, 131.443 * u, 0 * u, lc, 5);
+    gmsh::model::geo::addPoint(6.96495 * u, 4.25462 * u, 0 * u, lc, 6);
+    gmsh::model::geo::addPoint(6.76749 * u, 135.599 * u, 0 * u, lc, 42);
+    gmsh::model::geo::addPoint(6.76749 * u, 132.849 * u, 0 * u, lc, 43);
+    gmsh::model::geo::addPoint(6.76749 * u, 130.9 * u, 0 * u, lc, 7);
+    gmsh::model::geo::addPoint(6.76749 * u, 67.8486 * u, 0 * u, lc, 9);
+    gmsh::model::geo::addPoint(6.76749 * u, 4.79715 * u, 0 * u, lc, 8);
+    gmsh::model::geo::addPoint(6.51749 * u, 135.849 * u, 0 * u, lc, 45);
+    gmsh::model::geo::addPoint(6.51749 * u, 135.599 * u, 0 * u, lc, 44);
+    gmsh::model::geo::addPoint(3.81749 * u, 135.849 * u, 0 * u, lc, 46);
+    gmsh::model::geo::addPoint(3.81749 * u, 135.599 * u, 0 * u, lc, 47);
+    gmsh::model::geo::addPoint(3.56749 * u, 135.599 * u, 0 * u, lc, 48);
+    gmsh::model::geo::addPoint(3.56749 * u, 133.099 * u, 0 * u, lc, 49);
+    gmsh::model::geo::addPoint(2.36408 * u, 150.849 * u, 0 * u, lc, 56);
+    gmsh::model::geo::addPoint(2.36408 * u, 145.849 * u, 0 * u, lc, 52);
+    gmsh::model::geo::addPoint(-1.23251 * u, 145.849 * u, 0 * u, lc, 51);
+    gmsh::model::geo::addPoint(-1.23251 * u, 133.099 * u, 0 * u, lc, 50);
+    gmsh::model::geo::addPoint(-31.4378 * u, 196.206 * u, 0 * u, lc, 55);
 
     // definition of Line
     gmsh::model::geo::addLine(1, 2, 1);
@@ -139,7 +139,8 @@ GenerateMesh::GenerateMesh(QVector<double>& xCoordinates, QVector<double>& yCoor
     // 第一个点(最左边的点)
     newArray.push_back(43);
     int value = 1000;
-    for (int i = 0; i < xCoordinates.size(); ++i) {
+    for (int i = 0; i < xCoordinates.size(); ++i)
+    {
         newArray.push_back(value);
         value += 1;
     }
@@ -167,14 +168,14 @@ GenerateMesh::GenerateMesh(QVector<double>& xCoordinates, QVector<double>& yCoor
     gmsh::model::geo::addCircleArc(14, 61, 39, 44);
     gmsh::model::geo::addCircleArc(41, 62, 60, 45);
 
-
     // add curve loop
     gmsh::model::geo::addCurveLoop({7, -5, -3, -1, 9, 46, 10, -2, -4, -6, 8}, 1);
     // add plane surface
     gmsh::model::geo::addPlaneSurface({1}, 1);
 
     gmsh::model::geo::addCurveLoop({38, -40, -37, 36, 35, 34, -33, 32, -31, 30, 41, 42, 29, 45, -43, 28, -44,
-                                    11, 27, 26, 25, 24, -23, -22, 21, -20, -19, -18, -17, -16, -15, 14, -13, -12, -39}, 2);
+                                    11, 27, 26, 25, 24, -23, -22, 21, -20, -19, -18, -17, -16, -15, 14, -13, -12, -39},
+                                   2);
 
     gmsh::model::geo::addPlaneSurface({2}, 2);
 
@@ -209,10 +210,10 @@ GenerateMesh::GenerateMesh(QVector<double>& xCoordinates, QVector<double>& yCoor
     gmsh::model::geo::mesh::setTransfiniteCurve(5, 1, "Progression", 1);
 
     // generate a quadrilateral mesh
-    gmsh::option::setNumber("Mesh.RecombineAll", 1); // 对应于Recombine all triangular meshes选项
+    gmsh::option::setNumber("Mesh.RecombineAll", 1);           // 对应于Recombine all triangular meshes选项
     gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1); // 对应于2D recombination algorithm 的Blossoom
-    gmsh::option::setNumber("Mesh.SubdivisionAlgorithm", 1); // 对应于 subdivision algorithm 的 All Quads
-    gmsh::option::setNumber("Mesh.Algorithm", 8); // 对应于2D algptithm 的Frontal-Delaunay for quads
+    gmsh::option::setNumber("Mesh.SubdivisionAlgorithm", 1);   // 对应于 subdivision algorithm 的 All Quads
+    gmsh::option::setNumber("Mesh.Algorithm", 8);              // 对应于2D algptithm 的Frontal-Delaunay for quads
 
     gmsh::model::geo::synchronize();
 
@@ -223,7 +224,6 @@ GenerateMesh::GenerateMesh(QVector<double>& xCoordinates, QVector<double>& yCoor
     gmsh::write("t1.msh");
 
     gmsh::finalize();
-
 }
 
 // 生成默认网格
@@ -239,70 +239,70 @@ void GenerateMesh::generateMesh()
     double l_contact = 10;
 
     // definition of point
-    gmsh::model::geo::addPoint(109.75 *u, 240.849 *u, 0 *u, lc, 64);
-    gmsh::model::geo::addPoint(109.75 *u, 201.98 *u, 0 *u, lc, 10);
-    gmsh::model::geo::addPoint(109.75 *u, 132.905 *u, 0 *u, lc, 63);
-    gmsh::model::geo::addPoint(109.75 *u, 131.595 *u, 0 *u, lc, 11);
-    gmsh::model::geo::addPoint(109.75 *u, 4.10229 *u, 0 *u, lc, 13);
-    gmsh::model::geo::addPoint(109.75 *u, -66.2823 *u, 0 *u, lc, 12);
-    gmsh::model::geo::addPoint(103.779 *u, 131.849 *u, 0 *u, lc, 1);
-    gmsh::model::geo::addPoint(103.779 *u, 3.84862 *u, 0 *u, lc, 4);
-    gmsh::model::geo::addPoint(91.4581 *u, 239.849 *u, 0 *u, lc, 32);
-    gmsh::model::geo::addPoint(91.4581 *u, 231.208 *u, 0 *u, lc, 33);
-    gmsh::model::geo::addPoint(90.4581 *u, 240.849 *u, 0 *u, lc, 31);
-    gmsh::model::geo::addPoint(88.7786 *u, 221.208 *u, 0 *u, lc, 35);
-    gmsh::model::geo::addPoint(85.2231 *u, 240.849 *u, 0 *u, lc, 30);
-    gmsh::model::geo::addPoint(85.2231 *u, 237.846 *u, 0 *u, lc, 29);
-    gmsh::model::geo::addPoint(82.2205 *u, 237.846 *u, 0 *u, lc, 28);
-    gmsh::model::geo::addPoint(82.2205 *u, 229.849 *u, 0 *u, lc, 27);
-    gmsh::model::geo::addPoint(79.7038 *u, 205.49 *u, 0 *u, lc, 36);
-    gmsh::model::geo::addPoint(79.541 *u, 221.208 *u, 0 *u, lc, 25);
-    gmsh::model::geo::addPoint(73.8479 *u, 211.347 *u, 0 *u, lc, 24);
-    gmsh::model::geo::addPoint(73.7667 *u, 170.999 *u, 0 *u, lc, 59);
-    gmsh::model::geo::addPoint(73.7675 *u, 149.693 *u, 0 *u, lc, 41);
-    gmsh::model::geo::addPoint(73.7675 *u, 135.905 *u, 0 *u, l_contact, 40);
-    gmsh::model::geo::addPoint(72.3823 *u, 198.171 *u, 0 *u, lc, 15);
-    gmsh::model::geo::addPoint(71.4581 *u, 231.208 *u, 0 *u, lc, 34);
-    gmsh::model::geo::addPoint(70.7745 *u, 135.898 *u, 0 *u, lc, 58);
-    gmsh::model::geo::addPoint(70.7815 *u, 132.905 *u, 0 *u, l_contact, 57);
-    gmsh::model::geo::addPoint(70.2497 *u, 151.309 *u, 0 *u, lc, 60);
-    gmsh::model::geo::addPoint(68.8946 *u, 143.723 *u, 0 *u, lc, 62);
-    gmsh::model::geo::addPoint(68.3549 *u, 178.999 *u, 0 *u, lc, 61);
-    gmsh::model::geo::addPoint(62.3833 *u, 215.49 *u, 0 *u, lc, 37);
-    gmsh::model::geo::addPoint(61.2665 *u, 191.753 *u, 0 *u, lc, 14);
-    gmsh::model::geo::addPoint(61.1942 *u, 231.633 *u, 0 *u, lc, 26);
-    gmsh::model::geo::addPoint(60.8606 *u, 218.845 *u, 0 *u, lc, 23);
-    gmsh::model::geo::addPoint(60.8606 *u, 203.849 *u, 0 *u, lc, 22);
-    gmsh::model::geo::addPoint(59.7675 *u, 215.849 *u, 0 *u, lc, 20);
-    gmsh::model::geo::addPoint(59.7675 *u, 203.849 *u, 0 *u, lc, 21);
-    gmsh::model::geo::addPoint(53.7655 *u, 178.761 *u, 0 *u, lc, 39);
-    gmsh::model::geo::addPoint(53.7655 *u, 170.999 *u, 0 *u, lc, 38);
-    gmsh::model::geo::addPoint(47.7675 *u, 229.849 *u, 0 *u, lc, 18);
-    gmsh::model::geo::addPoint(47.7675 *u, 215.849 *u, 0 *u, lc, 19);
-    gmsh::model::geo::addPoint(19.75 *u, 229.348 *u, 0 *u, lc, 17);
-    gmsh::model::geo::addPoint(18.5317 *u, 194.461 *u, 0 *u, lc, 16);
-    gmsh::model::geo::addPoint(16.6231 *u, 182.417 *u, 0 *u, lc, 53);
-    gmsh::model::geo::addPoint(9.26749 *u, 131.849 *u, 0 *u, l_contact, 2);
-    gmsh::model::geo::addPoint(9.26749 *u, 3.84862 *u, 0 *u, lc, 3);
-    gmsh::model::geo::addPoint(7.17018 *u, 149.47 *u, 0 *u, lc, 54);
-    gmsh::model::geo::addPoint(6.96495 *u, 131.443 *u, 0 *u, lc, 5);
-    gmsh::model::geo::addPoint(6.96495 *u, 4.25462 *u, 0 *u, lc, 6);
-    gmsh::model::geo::addPoint(6.76749 *u, 135.599 *u, 0 *u, lc, 42);
-    gmsh::model::geo::addPoint(6.76749 *u, 132.849 *u, 0 *u, lc, 43);
-    gmsh::model::geo::addPoint(6.76749 *u, 130.9 *u, 0 *u, lc, 7);
-    gmsh::model::geo::addPoint(6.76749 *u, 67.8486 *u, 0 *u, lc, 9);
-    gmsh::model::geo::addPoint(6.76749 *u, 4.79715 *u, 0 *u, lc, 8);
-    gmsh::model::geo::addPoint(6.51749 *u, 135.849 *u, 0 *u, lc, 45);
-    gmsh::model::geo::addPoint(6.51749 *u, 135.599 *u, 0 *u, lc, 44);
-    gmsh::model::geo::addPoint(3.81749 *u, 135.849 *u, 0 *u, lc, 46);
-    gmsh::model::geo::addPoint(3.81749 *u, 135.599 *u, 0 *u, lc, 47);
-    gmsh::model::geo::addPoint(3.56749 *u, 135.599 *u, 0 *u, lc, 48);
-    gmsh::model::geo::addPoint(3.56749 *u, 133.099 *u, 0 *u, lc, 49);
-    gmsh::model::geo::addPoint(2.36408 *u, 150.849 *u, 0 *u, lc, 56);
-    gmsh::model::geo::addPoint(2.36408 *u, 145.849 *u, 0 *u, lc, 52);
-    gmsh::model::geo::addPoint(-1.23251 *u, 145.849 *u, 0 *u, lc, 51);
-    gmsh::model::geo::addPoint(-1.23251 *u, 133.099 *u, 0 *u, lc, 50);
-    gmsh::model::geo::addPoint(-31.4378 *u, 196.206 *u, 0 *u, lc, 55);
+    gmsh::model::geo::addPoint(109.75 * u, 240.849 * u, 0 * u, lc, 64);
+    gmsh::model::geo::addPoint(109.75 * u, 201.98 * u, 0 * u, lc, 10);
+    gmsh::model::geo::addPoint(109.75 * u, 132.905 * u, 0 * u, lc, 63);
+    gmsh::model::geo::addPoint(109.75 * u, 131.595 * u, 0 * u, lc, 11);
+    gmsh::model::geo::addPoint(109.75 * u, 4.10229 * u, 0 * u, lc, 13);
+    gmsh::model::geo::addPoint(109.75 * u, -66.2823 * u, 0 * u, lc, 12);
+    gmsh::model::geo::addPoint(103.779 * u, 131.849 * u, 0 * u, lc, 1);
+    gmsh::model::geo::addPoint(103.779 * u, 3.84862 * u, 0 * u, lc, 4);
+    gmsh::model::geo::addPoint(91.4581 * u, 239.849 * u, 0 * u, lc, 32);
+    gmsh::model::geo::addPoint(91.4581 * u, 231.208 * u, 0 * u, lc, 33);
+    gmsh::model::geo::addPoint(90.4581 * u, 240.849 * u, 0 * u, lc, 31);
+    gmsh::model::geo::addPoint(88.7786 * u, 221.208 * u, 0 * u, lc, 35);
+    gmsh::model::geo::addPoint(85.2231 * u, 240.849 * u, 0 * u, lc, 30);
+    gmsh::model::geo::addPoint(85.2231 * u, 237.846 * u, 0 * u, lc, 29);
+    gmsh::model::geo::addPoint(82.2205 * u, 237.846 * u, 0 * u, lc, 28);
+    gmsh::model::geo::addPoint(82.2205 * u, 229.849 * u, 0 * u, lc, 27);
+    gmsh::model::geo::addPoint(79.7038 * u, 205.49 * u, 0 * u, lc, 36);
+    gmsh::model::geo::addPoint(79.541 * u, 221.208 * u, 0 * u, lc, 25);
+    gmsh::model::geo::addPoint(73.8479 * u, 211.347 * u, 0 * u, lc, 24);
+    gmsh::model::geo::addPoint(73.7667 * u, 170.999 * u, 0 * u, lc, 59);
+    gmsh::model::geo::addPoint(73.7675 * u, 149.693 * u, 0 * u, lc, 41);
+    gmsh::model::geo::addPoint(73.7675 * u, 135.905 * u, 0 * u, l_contact, 40);
+    gmsh::model::geo::addPoint(72.3823 * u, 198.171 * u, 0 * u, lc, 15);
+    gmsh::model::geo::addPoint(71.4581 * u, 231.208 * u, 0 * u, lc, 34);
+    gmsh::model::geo::addPoint(70.7745 * u, 135.898 * u, 0 * u, lc, 58);
+    gmsh::model::geo::addPoint(70.7815 * u, 132.905 * u, 0 * u, l_contact, 57);
+    gmsh::model::geo::addPoint(70.2497 * u, 151.309 * u, 0 * u, lc, 60);
+    gmsh::model::geo::addPoint(68.8946 * u, 143.723 * u, 0 * u, lc, 62);
+    gmsh::model::geo::addPoint(68.3549 * u, 178.999 * u, 0 * u, lc, 61);
+    gmsh::model::geo::addPoint(62.3833 * u, 215.49 * u, 0 * u, lc, 37);
+    gmsh::model::geo::addPoint(61.2665 * u, 191.753 * u, 0 * u, lc, 14);
+    gmsh::model::geo::addPoint(61.1942 * u, 231.633 * u, 0 * u, lc, 26);
+    gmsh::model::geo::addPoint(60.8606 * u, 218.845 * u, 0 * u, lc, 23);
+    gmsh::model::geo::addPoint(60.8606 * u, 203.849 * u, 0 * u, lc, 22);
+    gmsh::model::geo::addPoint(59.7675 * u, 215.849 * u, 0 * u, lc, 20);
+    gmsh::model::geo::addPoint(59.7675 * u, 203.849 * u, 0 * u, lc, 21);
+    gmsh::model::geo::addPoint(53.7655 * u, 178.761 * u, 0 * u, lc, 39);
+    gmsh::model::geo::addPoint(53.7655 * u, 170.999 * u, 0 * u, lc, 38);
+    gmsh::model::geo::addPoint(47.7675 * u, 229.849 * u, 0 * u, lc, 18);
+    gmsh::model::geo::addPoint(47.7675 * u, 215.849 * u, 0 * u, lc, 19);
+    gmsh::model::geo::addPoint(19.75 * u, 229.348 * u, 0 * u, lc, 17);
+    gmsh::model::geo::addPoint(18.5317 * u, 194.461 * u, 0 * u, lc, 16);
+    gmsh::model::geo::addPoint(16.6231 * u, 182.417 * u, 0 * u, lc, 53);
+    gmsh::model::geo::addPoint(9.26749 * u, 131.849 * u, 0 * u, l_contact, 2);
+    gmsh::model::geo::addPoint(9.26749 * u, 3.84862 * u, 0 * u, lc, 3);
+    gmsh::model::geo::addPoint(7.17018 * u, 149.47 * u, 0 * u, lc, 54);
+    gmsh::model::geo::addPoint(6.96495 * u, 131.443 * u, 0 * u, lc, 5);
+    gmsh::model::geo::addPoint(6.96495 * u, 4.25462 * u, 0 * u, lc, 6);
+    gmsh::model::geo::addPoint(6.76749 * u, 135.599 * u, 0 * u, lc, 42);
+    gmsh::model::geo::addPoint(6.76749 * u, 132.849 * u, 0 * u, lc, 43);
+    gmsh::model::geo::addPoint(6.76749 * u, 130.9 * u, 0 * u, lc, 7);
+    gmsh::model::geo::addPoint(6.76749 * u, 67.8486 * u, 0 * u, lc, 9);
+    gmsh::model::geo::addPoint(6.76749 * u, 4.79715 * u, 0 * u, lc, 8);
+    gmsh::model::geo::addPoint(6.51749 * u, 135.849 * u, 0 * u, lc, 45);
+    gmsh::model::geo::addPoint(6.51749 * u, 135.599 * u, 0 * u, lc, 44);
+    gmsh::model::geo::addPoint(3.81749 * u, 135.849 * u, 0 * u, lc, 46);
+    gmsh::model::geo::addPoint(3.81749 * u, 135.599 * u, 0 * u, lc, 47);
+    gmsh::model::geo::addPoint(3.56749 * u, 135.599 * u, 0 * u, lc, 48);
+    gmsh::model::geo::addPoint(3.56749 * u, 133.099 * u, 0 * u, lc, 49);
+    gmsh::model::geo::addPoint(2.36408 * u, 150.849 * u, 0 * u, lc, 56);
+    gmsh::model::geo::addPoint(2.36408 * u, 145.849 * u, 0 * u, lc, 52);
+    gmsh::model::geo::addPoint(-1.23251 * u, 145.849 * u, 0 * u, lc, 51);
+    gmsh::model::geo::addPoint(-1.23251 * u, 133.099 * u, 0 * u, lc, 50);
+    gmsh::model::geo::addPoint(-31.4378 * u, 196.206 * u, 0 * u, lc, 55);
 
     // definition of Line
     gmsh::model::geo::addLine(1, 2, 1);
@@ -358,14 +358,14 @@ void GenerateMesh::generateMesh()
     gmsh::model::geo::addCircleArc(14, 61, 39, 44);
     gmsh::model::geo::addCircleArc(41, 62, 60, 45);
 
-
     // add curve loop
     gmsh::model::geo::addCurveLoop({7, -5, -3, -1, 9, 46, 10, -2, -4, -6, 8}, 1);
     // add plane surface
     gmsh::model::geo::addPlaneSurface({1}, 1);
 
     gmsh::model::geo::addCurveLoop({38, -40, -37, 36, 35, 34, -33, 32, -31, 30, 41, 42, 29, 45, -43, 28, -44,
-                                    11, 27, 26, 25, 24, -23, -22, 21, -20, -19, -18, -17, -16, -15, 14, -13, -12, -39}, 2);
+                                    11, 27, 26, 25, 24, -23, -22, 21, -20, -19, -18, -17, -16, -15, 14, -13, -12, -39},
+                                   2);
 
     gmsh::model::geo::addPlaneSurface({2}, 2);
 
@@ -400,10 +400,10 @@ void GenerateMesh::generateMesh()
     gmsh::model::geo::mesh::setTransfiniteCurve(5, 1, "Progression", 1);
 
     // generate a quadrilateral mesh
-    gmsh::option::setNumber("Mesh.RecombineAll", 1); // 对应于Recombine all triangular meshes选项
+    gmsh::option::setNumber("Mesh.RecombineAll", 1);           // 对应于Recombine all triangular meshes选项
     gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1); // 对应于2D recombination algorithm 的Blossoom
-    gmsh::option::setNumber("Mesh.SubdivisionAlgorithm", 1); // 对应于 subdivision algorithm 的 All Quads
-    gmsh::option::setNumber("Mesh.Algorithm", 8); // 对应于2D algptithm 的Frontal-Delaunay for quads
+    gmsh::option::setNumber("Mesh.SubdivisionAlgorithm", 1);   // 对应于 subdivision algorithm 的 All Quads
+    gmsh::option::setNumber("Mesh.Algorithm", 8);              // 对应于2D algptithm 的Frontal-Delaunay for quads
 
     gmsh::model::geo::synchronize();
 

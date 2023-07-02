@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 
-readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector<double>& col3,  QVector<double>& col4)
+readCsvFile::readCsvFile(const QString &fileName, QVector<double> &col1, QVector<double> &col3, QVector<double> &col4)
 {
     // 打开CSV文件
     QFile file(fileName);
@@ -14,7 +14,6 @@ readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector
 
     QTextStream in(&file);
 
-
     // 读取文件并解析每行数据
     int lineCount = 0;
     while (!in.atEnd())
@@ -23,7 +22,8 @@ readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector
         lineCount++;
 
         // 略去标题行
-        if (lineCount == 1) {
+        if (lineCount == 1)
+        {
             continue;
         }
 
@@ -43,13 +43,12 @@ readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector
 
         // 将第四列的值添加到col4中
         col4.push_back(fields[3].toDouble());
-
     }
 
     file.close();
 }
 
-readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector<double>& col2)
+readCsvFile::readCsvFile(const QString &fileName, QVector<double> &col1, QVector<double> &col2)
 {
     // 打开CSV文件
     QFile file(fileName);
@@ -59,7 +58,6 @@ readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector
     }
 
     QTextStream in(&file);
-
 
     // 读取文件并解析每行数据
     int lineCount = 0;
@@ -86,8 +84,6 @@ readCsvFile::readCsvFile(const QString& fileName, QVector<double>& col1, QVector
 
         // 将第二列的值添加到col2中
         col2.push_back(fields[1].toDouble());
-
-
     }
 
     file.close();

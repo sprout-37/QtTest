@@ -1,4 +1,4 @@
-﻿#ifndef COMPUTECONTACTSTRESS_H
+#ifndef COMPUTECONTACTSTRESS_H
 #define COMPUTECONTACTSTRESS_H
 
 #include <QWidget>
@@ -11,7 +11,6 @@ public:
     void computeContactStress();
 
 signals:
-
 };
 
 #endif // COMPUTECONTACTSTRESS_H

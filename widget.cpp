@@ -24,9 +24,10 @@ Widget::Widget(QWidget *parent)
     connect(ui->btn1, &QPushButton::clicked, this, [=]()
             {
                 // 打开文件，并将文件信息返回给path
-                QString path = QFileDialog::getOpenFileName(this,"导入型线控制点","C:/Users/Zeem/Desktop");
+                QString path = QFileDialog::getOpenFileName(this, "导入型线控制点", "C:/Users/Zeem/Desktop");
 
-                if (path.isEmpty()){
+                if (path.isEmpty())
+                {
                     return;
                 }
 
@@ -50,23 +51,20 @@ Widget::Widget(QWidget *parent)
                 QVector<double> y;
 
                 // 读取csv文件，获取控制点的x坐标和y坐标
-                readCsvFile read_csv(path, x, y);\
+                readCsvFile read_csv(path, x, y);
 
-                    // 生成网格
-                    GenerateMesh generateMesh(x, y);
+                // 生成网格
+                GenerateMesh generateMesh(x, y);
 
                 // 绘制压力分布
                 //                plotContactStress(contact_normal_lm, x, y);
-
 
                 //                for (int i = 0; i < x.size(); ++i) {
                 //                    qDebug() << x[i];
                 //                }
 
-
                 //                file.close();
             });
-
 
     // 实例化网格对象
     this->mesh = new GenerateMesh(this);
@@ -81,22 +79,23 @@ Widget::Widget(QWidget *parent)
                 // Set program name and parameters
                 QString program = "/home/meng/moose_install_test/contact0526/contact0526-opt";
                 QStringList arguments;
-                arguments << "-i" << "/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/zhixian_no_fric.i";
+                arguments << "-i"
+                          << "/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/zhixian_no_fric.i";
 
                 process->setProgram(program);
                 process->setArguments(arguments);
                 //            process->setReadChannel(QProcess::StandardOutput);
 
-                QObject::connect(process, &QProcess::readyReadStandardOutput, [process]() {
-                    QByteArray data = process->readAllStandardOutput();
-                    QString output(data);
-                    qDebug().noquote() << output; // 令换行符等转义字符生效
-                });
+                QObject::connect(process, &QProcess::readyReadStandardOutput, [process]()
+                                 {
+                                     QByteArray data = process->readAllStandardOutput();
+                                     QString output(data);
+                                     qDebug().noquote() << output; // 令换行符等转义字符生效
+                                 });
 
                 process->start();
 
                 //            process->waitForFinished();
-
             });
 
     // 点击选取文件按钮，弹出文件对话框，并进行图像绘制
@@ -137,8 +136,6 @@ Widget::Widget(QWidget *parent)
                 plotContactStress(contact_normal_lm, x, y);
 
                 file.close(); });
-
-
 }
 
 Widget::~Widget()

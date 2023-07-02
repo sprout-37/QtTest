@@ -9,11 +9,10 @@ class GenerateMesh : public QWidget
 public:
     explicit GenerateMesh(QWidget *parent = nullptr);
     // 生成网格
-    GenerateMesh(QVector<double>& x, QVector<double>& y);
+    GenerateMesh(QVector<double> &x, QVector<double> &y);
 
     void generateMesh();
 signals:
-
 };
 
 #endif // GENERATEMESH_H
