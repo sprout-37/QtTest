@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.5)
 
 project(QtTest VERSION 0.1 LANGUAGES CXX)
 
@@ -37,8 +37,12 @@ endif()
 target_include_directories(QtTest PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_link_libraries(QtTest PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(QtTest PRIVATE Qt${QT_VERSION_MAJOR}::PrintSupport)
-#target_link_libraries(QtTest PUBLIC ${CMAKE_CURRENT_LIST_DIR}/lib/gmsh-4.11.dll)
-target_link_libraries(QtTest PUBLIC ${CMAKE_CURRENT_LIST_DIR}/lib/libgmsh.so)
+
+if (WIN32)
+    target_link_libraries(QtTest PUBLIC ${CMAKE_CURRENT_LIST_DIR}/lib/gmsh-4.11.dll)
+elseif (UNIX)
+    target_link_libraries(QtTest PUBLIC ${CMAKE_CURRENT_LIST_DIR}/lib/libgmsh.so)
+endif()
 
 set_target_properties(QtTest PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER Meng
