@@ -24,7 +24,7 @@ Widget::Widget(QWidget *parent)
     connect(ui->btn1, &QPushButton::clicked, this, [=]()
             {
                 // 打开文件，并将文件信息返回给path
-                QString path = QFileDialog::getOpenFileName(this, "导入型线控制点", "C:/Users/Zeem/Desktop");
+                QString path = QFileDialog::getOpenFileName(this, "导入型线控制点", "/home/meng/moose_install_test/contact0526/problems/2023_07_06_test/");
 
                 if (path.isEmpty())
                 {
@@ -80,6 +80,7 @@ Widget::Widget(QWidget *parent)
                 QString program = "/home/meng/moose_install_test/contact0526/contact0526-opt";
                 QStringList arguments;
                 arguments << "-i"
+//                          << "/home/meng/moose_install_test/contact0526/problems/2023_07_06_test/zhixian_no_fric.i";
                           << "/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/zhixian_no_fric.i";
 
                 process->setProgram(program);
@@ -89,8 +90,10 @@ Widget::Widget(QWidget *parent)
                 QObject::connect(process, &QProcess::readyReadStandardOutput, [process]()
                                  {
                                      QByteArray data = process->readAllStandardOutput();
+                                     QByteArray data_error = process->readAllStandardError();
                                      QString output(data);
-                                     qDebug().noquote() << output; // 令换行符等转义字符生效
+                                     QString output_error(data_error);
+                                     qDebug().noquote() << output << output_error; // 令换行符等转义字符生效
                                  });
 
                 process->start();
@@ -101,41 +104,41 @@ Widget::Widget(QWidget *parent)
     // 点击选取文件按钮，弹出文件对话框，并进行图像绘制
     connect(ui->btn4, &QPushButton::clicked, this, [=]()
             {
-
                 // 打开文件，并将文件信息返回给path
-                QString path = QFileDialog::getOpenFileName(this,"选取结果文件","/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/");
-
-                if (path.isEmpty()){
+//                QString path = QFileDialog::getOpenFileName(this, "选取结果文件", "/home/meng/moose_install_test/contact0526/problems/2023_07_06_test/");
+                QString path = QFileDialog::getOpenFileName(this, "选取结果文件", "/home/meng/projects/contact0306/problems/contact_test/2023_05_10_test/");
+                if (path.isEmpty())
+                {
                     return;
                 }
 
-                // 将路径放入到lineEdit中
-                ui->txt1->setText(path);
+                //                // 将路径放入到lineEdit中
+                //                ui->txt1->setText(path);
 
-                // 读取内容，并放入textEdit中
-                QFile file(path); // 参数为要读取文件的路径
-                // 设置打开方式
-                // https://doc.qt.io/qt-6/qiodevicebase.html#OpenModeFlag-enum
-                file.open(QIODeviceBase::ReadOnly);
-                // 直接读取所有数据
-                // QByteArray array = file.read();
-                // 读取一行数据
-                QByteArray array = file.readLine();
-                // 将读取到的数据，放入textEdit中
-                ui->txt2->setText(array);
+                //                // 读取内容，并放入textEdit中
+                //                QFile file(path); // 参数为要读取文件的路径
+                //                // 设置打开方式
+                //                // https://doc.qt.io/qt-6/qiodevicebase.html#OpenModeFlag-enum
+                //                file.open(QIODeviceBase::ReadOnly);
+                //                // 直接读取所有数据
+                //                // QByteArray array = file.read();
+                //                // 读取一行数据
+                //                QByteArray array = file.readLine();
+                //                // 将读取到的数据，放入textEdit中
+                //                ui->txt2->setText(array);
 
                 // 定义个vector数组，用于存放绘图用的变量
                 QVector<double> contact_normal_lm;
                 QVector<double> x;
                 QVector<double> y;
 
-
                 // 读取csv文件
                 readCsvFile read_csv(path, contact_normal_lm, x, y);
                 // 绘制压力分布
                 plotContactStress(contact_normal_lm, x, y);
 
-                file.close(); });
+                //                file.close();
+            });
 }
 
 Widget::~Widget()
@@ -160,7 +163,7 @@ QVector<double> Widget::getDistances(const QVector<double> &x, const QVector<dou
     return dist;
 }
 
-void Widget::plotContactStress(const QVector<double> &contact_normal_lm, const QVector<double> x, const QVector<double> &y)
+void Widget::plotContactStress(const QVector<double> &contact_normal_lm, const QVector<double> &x, const QVector<double> &y)
 {
 
     QVector<double> distance = getDistances(x, y);
@@ -173,7 +176,17 @@ void Widget::plotContactStress(const QVector<double> &contact_normal_lm, const Q
     ui->customPlot->yAxis->setLabel("Contact pressure");
     // set axes ranges, so we see all data:
     ui->customPlot->xAxis->setRange(0, 70);
-    ui->customPlot->yAxis->setRange(0, 140000);
+    int maxVal = contact_normal_lm[0]; // 假设数组至少包含一个元素作为初始最大值
+
+    for (int i = 1; i < contact_normal_lm.size(); i++)
+    {
+        if (contact_normal_lm[i] > maxVal)
+        {
+            maxVal = contact_normal_lm[i]; // 更新最大值
+        }
+    }
+
+    ui->customPlot->yAxis->setRange(0, maxVal + 100);
     ui->customPlot->replot();
 }
 
